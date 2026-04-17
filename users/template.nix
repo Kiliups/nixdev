@@ -4,6 +4,8 @@
     if justTmuxSetup then
       [
         ../moduls/tmux.nix
+        ../moduls/tools.nix
+        ../moduls/lazy.nix
       ]
     else
       [
