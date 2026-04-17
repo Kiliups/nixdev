@@ -1,4 +1,4 @@
-{ justTmuxSetup, ... }:
+{ justTmuxSetup, pkgs, ... }:
 {
   imports =
     if justTmuxSetup then
@@ -15,4 +15,9 @@
         ../moduls/starship.nix
         ../moduls/vscode.nix
       ];
+  stylix = {
+    enable = true;
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-macchiato.yaml";
+    targets.vscode.enable = false;
+  };
 }

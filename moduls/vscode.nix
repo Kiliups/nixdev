@@ -82,12 +82,10 @@ in
   };
 
   # This allows VS Code to edit it, while rebuild overwrites with defaults.
-  home.activation.writeVscodeSettings = lib.mk (
-    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      mkdir -p "${config.home.homeDirectory}/Library/Application Support/Code/User"
-      cat > "${config.home.homeDirectory}/Library/Application Support/Code/User/settings.json" << 'EOF'
-      ${builtins.toJSON vsCodeSettings}
-      EOF
-    ''
-  );
+  home.activation.writeVscodeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "${config.home.homeDirectory}/Library/Application Support/Code/User"
+    cat > "${config.home.homeDirectory}/Library/Application Support/Code/User/settings.json" << 'EOF'
+    ${builtins.toJSON vsCodeSettings}
+    EOF
+  '';
 }

@@ -7,10 +7,20 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
-    { nixpkgs, home-manager, ... }:
+    {
+      nixpkgs,
+      home-manager,
+      stylix,
+      ...
+    }:
     let
       configPath = "${toString ./.}/config/local.nix";
       templateConfig =
@@ -34,11 +44,12 @@
           };
 
           modules = [
+            stylix.homeModules.stylix
             ./users/template.nix
             {
               home = {
                 inherit username;
-                stateVersion = "24.11";
+                stateVersion = "26.05";
                 homeDirectory = "/Users/${username}";
               };
             }

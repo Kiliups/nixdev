@@ -3,6 +3,6 @@
   home.packages = with pkgs; [
     obsidian
     spotify
-    chromium
+    google-chrome
   ];
 }
