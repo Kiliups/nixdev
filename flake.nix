@@ -22,9 +22,7 @@
       ...
     }:
     let
-      configPath = "${toString ./.}/config/local.nix";
-      templateConfig =
-        if builtins.pathExists configPath then import configPath else import ./config/example.nix;
+      templateConfig = import ./config/user.nix;
 
       mkHome =
         {

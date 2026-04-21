@@ -41,15 +41,9 @@ git clone <repo-url> nixdev
 cd nixdev
 ```
 
-### 3. Create your local config
+### 3. Edit user.nix config to 
 
-`config/local.nix` is ignored by git so you can keep machine-specific values there.
-
-```sh
-cp PROJECT_DIR/config/example.nix PROJECT_DIR/config/local.nix
-```
-
-Edit `config/local.nix` and set your real values:
+Edit `config/user.nix` and set your real values:
 
 ```nix
 {
@@ -71,7 +65,7 @@ If you only want the tmux tooling on a machine, set `justTmuxSetup = true`.
 Run the switch command with the username from `config/local.nix`:
 
 ```sh
-nix run nixpkgs#home-manager -- switch --flake .#your.username --impure -b backup
+nix run nixpkgs#home-manager -- switch --flake PROJECT_DIR#your.username --impure -b backup
 ```
 
 The `-b backup` flag asks Home Manager to keep backups of replaced files.
@@ -91,7 +85,7 @@ tmux
 ### Rebuild after changes
 
 ```sh
-nix run nixpkgs#home-manager -- switch --flake .#your.username --impure -b backup
+nix run nixpkgs#home-manager -- switch --flake PROJECT_DIR#your.username --impure -b backup
 # after first setup
 hms PROJECT_DIR#your.username
 # update packages
