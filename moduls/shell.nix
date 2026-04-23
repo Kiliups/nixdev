@@ -18,6 +18,9 @@
       shellAliases = {
         ls = "eza -lh --group-directories-first --icons=auto";
       };
+      initContent = ''
+        bindkey -e
+      '';
     };
 
     fzf = {
