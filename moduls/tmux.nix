@@ -160,6 +160,52 @@ let
       tmux select-pane -t "$first_pane"
     '';
   };
+
+  tmlm = pkgs.writeShellApplication {
+    name = "tmlm";
+    runtimeInputs = [
+      pkgs.tmux
+      pkgs.coreutils
+      tml
+    ];
+    text = ''
+      set -euo pipefail
+
+      [[ -z "''${1:-}" ]] && {
+        echo "Usage: tmlm <claude(cc)|codex(cx)|cursor-agent(ccli)|opencode(opc)|other_ai> [<second_ai> ...]"
+        exit 1
+      }
+
+      [[ -z "''${TMUX:-}" ]] && {
+        echo "You must start tmux to use tmlm."
+        exit 1
+      }
+
+      cmds=("$@")
+      base_dir="$PWD"
+      first=true
+
+      tmux rename-session "$(basename "$base_dir" | tr '.:' '--')"
+
+      shopt -s nullglob
+      for dir in "$base_dir"/*/; do
+        dirpath="''${dir%/}"
+
+        quoted_cmds=""
+        for cmd in "''${cmds[@]}"; do
+          quoted_cmds+=" $(printf '%q' "$cmd")"
+        done
+
+        if $first; then
+          tmux send-keys -t "$TMUX_PANE" "cd $(printf '%q' "$dirpath") && tml$quoted_cmds" C-m
+          first=false
+        else
+          pane_id="$(tmux new-window -c "$dirpath" -P -F '#{pane_id}')"
+          tmux send-keys -t "$pane_id" "tml$quoted_cmds" C-m
+        fi
+      done
+    '';
+  };
 in
 {
   home.packages = with pkgs; [
@@ -169,12 +215,14 @@ in
     tdlm
     tsl
     tml
+    tmlm
   ];
 
   programs = {
     zsh = {
       shellAliases = {
         tmlall = "tml claude codex cursor-agent";
+        tmlmall = "tmlm claude codex cursor-agent";
       };
     };
   };
