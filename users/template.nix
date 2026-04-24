@@ -23,6 +23,10 @@
     targets.vscode.enable = false;
   };
 
+  home.packages = with pkgs; [
+    home-manager
+  ];
+
   programs.zsh.initContent = ''
     hms() {
       if [ -z "''${1:-}" ]; then
@@ -33,7 +37,7 @@
       local flake_ref="$1"
       shift
 
-      nix run nixpkgs#home-manager -- switch --flake "$flake_ref" --impure -b backup 
+      home-manager switch --flake "$flake_ref" --impure -b backup 
     }
   '';
 }
