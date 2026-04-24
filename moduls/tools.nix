@@ -21,5 +21,8 @@
     # nix
     nixfmt
     nixd
+
+    # yarn v4
+    yarn-berry
   ];
 }
